@@ -1,0 +1,45 @@
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: 1.8em;
+}
+
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 4px solid transparent;
+    border-top: 4px solid black;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.fetchInfo {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.todo-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}

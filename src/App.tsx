@@ -1,5 +1,7 @@
 import Footer from "./components/Footer";
 import Todo from "./components/Todo";
+import Form from "./components/Form";
+import "./App.css";
 import { useState, useEffect } from "react";
 import { TodoInterface } from "./interfaces/TodoInterface";
 
@@ -11,14 +13,22 @@ function App() {
   const [todos, setTodos] = useState<[TodoInterface] | []>([]);
   // State för de filtrerade todos
   const [filteredTodos, setFilteredTodos] = useState<TodoInterface[]>([]);
+  // State för errors
+  const [error, setError] = useState<string | null>(null);
+  // State för laddningsmeddelnade
+  const [loading, setloading] = useState(false);
 
   // UseEffect för att hämta todos
   useEffect(() => {
     getTodos();
   }, []);
 
+  // Fetch-anrop för att hämta todos
   const getTodos = async () => {
     try {
+
+      setloading(true);
+
       const response = await fetch("http://localhost:5000/todos");
 
       if (response.ok) {
@@ -26,13 +36,16 @@ function App() {
 
         setTodos(data);
         setFilteredTodos(data);
+        setError(null);
 
       } else {
         throw Error;
       }
-
     } catch (error) {
       console.log(error);
+      setError("Något gick fel vid hämtningen av todos. Testa igen senare!");
+    } finally {
+      setloading(false);
     }
   }
 
@@ -46,21 +59,40 @@ function App() {
 
 
   return (
-    <><main>
-      <h1>Mina "Todos"</h1>
+    <>
+      <main>
+        <h1>Mina "Todos"</h1>
 
-      <form style={{ textAlign: "center", backgroundColor: "white", padding: "12px" }}>
-        <label htmlFor="search">Sök här: </label>
-        <input type="text" value={search} onChange={(event) => setSearch(event.target.value)} />
-      </form>
+        {
+          error && <p className="fetchInfo"> {error} </p>   // För felmeddelande vid fetch
+        }
 
+        {
+          loading && (
+            <div className="fetchInfo">
+              <span className="loading-spinner"></span>   
+              <p>Hämtar todos...</p>
+            </div>
+          )
+        }
 
-      <div className="todo-container">
-        {filteredTodos.map((todo) => (
-          <Todo todoProp={todo} key={todo._id} />
-        ))}
-      </div>
-    </main>
+        <form style={{ textAlign: "center", padding: "12px" }}>
+          <label htmlFor="search">Sök här: </label>
+          <input type="text" value={search} onChange={(event) => setSearch(event.target.value)} />
+        </form>
+
+        <div className="todo-container">
+          {
+            filteredTodos.map((todo) => (
+              <Todo todoProp={todo} key={todo._id} />
+            ))}
+        </div>
+
+        <h2 style={{ textAlign:"center", padding:"1.4em" }} >Lägg till nya "todos"</h2>
+
+        <Form />
+
+      </main>
 
       <Footer />
 

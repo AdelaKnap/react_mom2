@@ -1,0 +1,45 @@
+input {
+    margin: 1em 0;
+}
+
+select {
+    margin: 1em 0;
+}
+
+span {
+    border: 1px solid;
+    margin: 0 0px 20px;
+    padding: 15px 10px 15px 15px;
+    display: block;
+}
+
+.error {
+    color: red;
+}
+
+input[type=text],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: blueviolet;
+    color: white;
+    padding: 14px 20px;
+    cursor: pointer;
+    border: none;
+}
+
+input[type=submit]:hover {
+    background-color: rgb(109, 16, 196);
+}
+
+div {
+    background-color: white;
+    padding: 20px;
+}
