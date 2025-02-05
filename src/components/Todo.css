@@ -5,3 +5,17 @@
     border-radius: 12px;
     padding: 20px;
 }
+
+.btn-change {
+    margin-right: 8px;
+    padding: 8px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-delete {
+    padding: 8px;
+    background-color: red;
+    cursor: pointer;
+}

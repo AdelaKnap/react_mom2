@@ -70,14 +70,14 @@ function App() {
         {
           loading && (
             <div className="fetchInfo">
-              <span className="loading-spinner"></span>   
+              <span className="loading-spinner"></span>
               <p>Hämtar todos...</p>
             </div>
           )
         }
 
-        <form style={{ textAlign: "center", padding: "12px" }}>
-          <label htmlFor="search">Sök här: </label>
+        <form className="search-form">
+          <label htmlFor="search">Sök efter todo: </label>
           <input type="text" value={search} onChange={(event) => setSearch(event.target.value)} />
         </form>
 
@@ -88,7 +88,7 @@ function App() {
             ))}
         </div>
 
-        <h2 style={{ textAlign:"center", padding:"1.4em" }} >Lägg till nya "todos"</h2>
+        <h2 style={{ textAlign: "center", padding: "1.4em" }} >Lägg till nya "todos"</h2>
 
         <Form />
 
