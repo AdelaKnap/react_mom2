@@ -7,15 +7,11 @@ import { TodoInterface } from "./interfaces/TodoInterface";
 
 function App() {
 
-  // State för sök-funktion
+  // States
   const [search, setSearch] = useState("");
-  // State för todos
-  const [todos, setTodos] = useState<[TodoInterface] | []>([]);
-  // State för de filtrerade todos
+  const [todos, setTodos] = useState<TodoInterface[] | []>([]);
   const [filteredTodos, setFilteredTodos] = useState<TodoInterface[]>([]);
-  // State för errors
   const [error, setError] = useState<string | null>(null);
-  // State för laddningsmeddelnade
   const [loading, setloading] = useState(false);
 
   // UseEffect för att hämta todos
@@ -26,7 +22,6 @@ function App() {
   // Fetch-anrop för att hämta todos
   const getTodos = async () => {
     try {
-
       setloading(true);
 
       const response = await fetch("http://localhost:5000/todos");
@@ -39,7 +34,7 @@ function App() {
         setError(null);
 
       } else {
-        throw Error;
+        throw Error("Något gick fel " + response.status);
       }
     } catch (error) {
       console.log(error);
@@ -49,6 +44,25 @@ function App() {
     }
   }
 
+  // Funktion för att lägga till en ny todo
+  const addTodo = async (newTodo: { title: string; description?: string; status: string }) => {
+    try {
+      const response = await fetch("http://localhost:5000/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTodo),
+      });
+
+      if (response.ok) {
+        await getTodos(); // Hämta todos på nytt efter post
+      } else {
+        throw new Error("Kunde inte lägga till todo.");
+      }
+    } catch (error) {
+      console.error("Fel vid tilläggning av todo:", error);
+    }
+  };
+
   // Filtrera todos med useEffect
   useEffect(() => {
     const filtered = todos.filter(todo =>
@@ -57,40 +71,36 @@ function App() {
     setFilteredTodos(filtered);
   }, [search, todos]);
 
+  // Sidinnehållet
 
   return (
     <>
       <main>
         <h1>Mina "Todos"</h1>
+        {error && <p className="fetchInfo"> {error} </p>}
 
-        {
-          error && <p className="fetchInfo"> {error} </p>   // För felmeddelande vid fetch
-        }
-
-        {
-          loading && (
-            <div className="fetchInfo">
-              <span className="loading-spinner"></span>
-              <p>Hämtar todos...</p>
-            </div>
-          )
-        }
+        {loading && (                           // Visa laddningsikon om loading är true 
+          <div className="fetchInfo">
+            <span className="loading-spinner"></span>
+            <p>Hämtar todos...</p>
+          </div>
+        )}
 
         <form className="search-form">
           <label htmlFor="search">Sök efter todo: </label>
           <input type="text" value={search} onChange={(event) => setSearch(event.target.value)} />
         </form>
 
-        <div className="todo-container">
+        <div className="todo-container">  
           {
-            filteredTodos.map((todo) => (
-              <Todo todoProp={todo} key={todo._id} />
+            filteredTodos.map((todo) => (               // Loopa genom de filtrerade todos
+              <Todo todoProp={todo} key={todo._id} onStatusUpdate={getTodos} />
             ))}
         </div>
 
         <h2 style={{ textAlign: "center", padding: "1.4em" }} >Lägg till nya "todos"</h2>
 
-        <Form />
+        <Form addTodo={addTodo} />
 
       </main>
 

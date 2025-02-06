@@ -1,5 +1,5 @@
 export interface FormInterface {
     title: string,
-    description: string,
+    description?: string,
     status: string
 }
