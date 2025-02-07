@@ -13,11 +13,16 @@ const Todo = ({ todoProp, onStatusUpdate }: { todoProp: TodoInterface, onStatusU
     // Funktion för att ändra status
     const updateStatus = async (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newStatus = e.target.value;
-        const newTodoStatus = { ...todoProp, status: newStatus };
+
+        // Skapa ett nytt objekt och ta bort id och _v för att matcha joi-valideirng backend, eslint för att strunta i att _v inte används
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { _id, __v, ...restTodo } = todoProp;
+        const newTodoStatus: Omit<TodoInterface, '_id' | '__v'> =
+            { ...restTodo, status: newStatus };
 
         // PUT-anrop
         try {
-            const response = await fetch("http://localhost:5000/todos/" + todoProp._id,
+            const response = await fetch("http://localhost:5000/todos/" + _id,
                 {
                     method: "PUT",
                     headers: {
@@ -86,8 +91,7 @@ const Todo = ({ todoProp, onStatusUpdate }: { todoProp: TodoInterface, onStatusU
             {error && <p style={{ color: "red" }}> {error} </p>}
 
             <button className="btn-delete" onClick={deleteTodo}>Radera</button>
-            
-            {/* <button className="btn-delete" onClick={changeTodo}>Ändra</button> */}
+
         </section>
     );
 };
