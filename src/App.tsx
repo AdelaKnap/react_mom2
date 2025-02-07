@@ -24,7 +24,7 @@ function App() {
     try {
       setloading(true);
 
-      const response = await fetch("http://localhost:5000/todos");
+      const response = await fetch("https://todos-api-wudv.onrender.com/todos");
 
       if (response.ok) {
         const data = await response.json();
@@ -47,7 +47,7 @@ function App() {
   // Funktion för att lägga till en ny todo
   const addTodo = async (newTodo: { title: string; description?: string; status: string }) => {
     try {
-      const response = await fetch("http://localhost:5000/todos", {
+      const response = await fetch("https://todos-api-wudv.onrender.com/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTodo),

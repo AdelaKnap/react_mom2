@@ -22,7 +22,7 @@ const Form = ({ addTodo }: { addTodo: (newTodo: FormInterface) => Promise<void> 
     // Funktion för att hämta status från en API
     const fetchStatusOptions = async () => {
         try {
-            const response = await fetch("http://localhost:5000/status-options");
+            const response = await fetch("https://todos-api-wudv.onrender.com/status-options");
             if (response.ok) {
                 const data = await response.json();
                 setStatusArray(data); // Uppdaterar statusArray 

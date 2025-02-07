@@ -22,7 +22,7 @@ const Todo = ({ todoProp, onStatusUpdate }: { todoProp: TodoInterface, onStatusU
 
         // PUT-anrop
         try {
-            const response = await fetch("http://localhost:5000/todos/" + _id,
+            const response = await fetch("https://todos-api-wudv.onrender.com/todos/" + _id,
                 {
                     method: "PUT",
                     headers: {
@@ -51,7 +51,7 @@ const Todo = ({ todoProp, onStatusUpdate }: { todoProp: TodoInterface, onStatusU
     // Funktion för att radera
     const deleteTodo = async () => {
         try {
-            const response = await fetch("http://localhost:5000/todos/" + todoProp._id,
+            const response = await fetch("https://todos-api-wudv.onrender.com/todos/" + todoProp._id,
                 {
                     method: "DELETE",
                 }
